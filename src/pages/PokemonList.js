@@ -9,7 +9,7 @@ const getPokemonIdFromUrl = (url) => {
 }
 
 const PokemonList = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [paginationCount, setPaginationCount] = useState(0)
   const [pokemonList, setPokemonList] = useState([])
 
@@ -38,7 +38,6 @@ const PokemonList = () => {
 
   useEffect(() => {
     const getPokemon = async () => {
-      setIsLoading(true)
       const data = await fetchPokemon(0)
 
       setPokemonList(data.results)
