@@ -6,11 +6,17 @@ import {
   gql
 } from "@apollo/client";
 
+import CatchPokemon from '../components/CatchPokemon';
+
 
 const PokemonList = () => {
+  const currentPokemonName = useParams().name
+
   const POKEMON_DETAIL = gql`
     query GetPokemonDetail($name: String!) {
       pokemon(name: $name) {
+        id
+        name
         sprites {
           front_default
         }
@@ -35,7 +41,7 @@ const PokemonList = () => {
 
   const { loading, error, data } = useQuery(POKEMON_DETAIL, {
     variables: {
-      name: useParams().name
+      name: currentPokemonName
     }
   })
 
@@ -46,6 +52,8 @@ const PokemonList = () => {
     <section>
       <div>
         <img alt="sprite" src={data.pokemon.sprites.front_default} />
+
+        <CatchPokemon pokemon={data.pokemon} />
 
         <ul>
           {data.pokemon.types.map(({ type }) => (
