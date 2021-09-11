@@ -33,8 +33,6 @@ const PokemonList = () => {
     }
   `
 
-  console.log(useParams())
-
   const { loading, error, data } = useQuery(POKEMON_DETAIL, {
     variables: {
       name: useParams().name
