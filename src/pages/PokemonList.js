@@ -57,7 +57,7 @@ const PokemonList = () => {
           {data.pokemons.results.map(item => (
             <tr key={item.name}>
               <td>
-                <img src={item.image} />
+                <img alt="sprite" src={item.image} />
               </td>
               <td>
                 <Link to={'/detail/' + item.name}>
