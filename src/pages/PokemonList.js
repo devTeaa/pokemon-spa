@@ -44,7 +44,7 @@ const PokemonList = () => {
 
   return (
     <section>
-      <table>
+      <table className="pokemon-list">
         <thead>
           <tr>
             <th />
