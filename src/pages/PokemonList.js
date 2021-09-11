@@ -44,7 +44,7 @@ const PokemonList = () => {
 
   return (
     <section>
-      <table>
+      <table className="pokemon-list">
         <thead>
           <tr>
             <th />
@@ -57,7 +57,7 @@ const PokemonList = () => {
           {data.pokemons.results.map(item => (
             <tr key={item.name}>
               <td>
-                <img src={item.image} />
+                <img alt="sprite" src={item.image} />
               </td>
               <td>
                 <Link to={'/detail/' + item.name}>
@@ -74,9 +74,9 @@ const PokemonList = () => {
 
       <div className="button-group">
 
-        <button disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
+        <button type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
 
-        <button onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
+        <button type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
       </div>
     </section>
   )

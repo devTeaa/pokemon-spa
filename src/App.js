@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
 import PokemonList from './pages/PokemonList'
 import PokemonDetail from './pages/PokemonDetail'
+import MyPokemonList from './pages/MyPokemonList'
 
 import {
   ApolloClient,
@@ -25,6 +26,7 @@ function App() {
           <Header />
           <Route path="/" exact component={PokemonList} />
           <Route path="/detail/:name" component={PokemonDetail} />
+          <Route path="/my-pokemon" component={MyPokemonList} />
         </div>
       </Router>
     </ApolloProvider>
