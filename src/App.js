@@ -6,15 +6,28 @@ import Header from './components/Header'
 import PokemonList from './pages/PokemonList'
 import PokemonDetail from './pages/PokemonDetail'
 
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+} from "@apollo/client";
+
 function App() {
+  const client = new ApolloClient({
+    uri: 'https://graphql-pokeapi.graphcdn.app/',
+    cache: new InMemoryCache()
+  });
+
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Route path="/" exact component={PokemonList} />
-        <Route path="/detail/:id" component={PokemonDetail} />
-      </div>
-    </Router>
+    <ApolloProvider client={client}>
+      <Router>
+        <div className="App">
+          <Header />
+          <Route path="/" exact component={PokemonList} />
+          <Route path="/detail/:name" component={PokemonDetail} />
+        </div>
+      </Router>
+    </ApolloProvider>
   );
 }
 

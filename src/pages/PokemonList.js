@@ -1,67 +1,66 @@
 import './PokemonList.scss'
-import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-
-const getPokemonIdFromUrl = (url) => {
-  const result = url.match(/\/\d+\//)[0]
-
-  return result || ''
-}
+import {
+  useQuery,
+  gql
+} from "@apollo/client";
 
 const PokemonList = () => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [paginationCount, setPaginationCount] = useState(0)
-  const [pokemonList, setPokemonList] = useState([])
-
-  const fetchPokemon = async (paging) => {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${paging * 10}`)
-    const data = await res.json()
-
-    return {
-      ...data,
-      results: data.results.map(item => ({
-        ...item,
-        id: getPokemonIdFromUrl(item.url)
-      })),
+  const POKEMON_LIST = gql`
+    query GetPokemonList($limit: Int!, $offset: Int!) {
+      pokemons(limit: $limit, offset: $offset) {
+        prevOffset
+        nextOffset,
+        results {
+          url,
+          name,
+          image,
+        }
+      }
     }
+  `;
 
+  const { loading, error, data, fetchMore } = useQuery(POKEMON_LIST, {
+    variables: {
+      limit: 10,
+      offset: 0
+    },
+  });
+
+  const handlePagination = (offset) => {
+    fetchMore({
+      variables: { offset, limit: 10 },
+      updateQuery: (prevResults, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prevResults
+
+        return fetchMoreResult
+      }
+    })
   }
 
-  const handlePagination = async (value) => {
-    setIsLoading(true)
-    const data = await fetchPokemon(paginationCount + value)
 
-    setPokemonList(data.results)
-    setPaginationCount(paginationCount + value)
-    setIsLoading(false)
-  }
-
-  useEffect(() => {
-    const getPokemon = async () => {
-      const data = await fetchPokemon(0)
-
-      setPokemonList(data.results)
-      setIsLoading(false)
-    }
-
-    getPokemon()
-  }, [])
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <section>
       <table>
         <thead>
           <tr>
+            <th />
             <th>Pokemon Name</th>
             <th>Count</th>
           </tr>
         </thead>
 
         <tbody>
-          {pokemonList.map(item => (
+          {data.pokemons.results.map(item => (
             <tr key={item.name}>
               <td>
-                <Link to={'/detail' + item.id}>
+                <img src={item.image} />
+              </td>
+              <td>
+                <Link to={'/detail/' + item.name}>
                   {item.name}
                 </Link>
               </td>
@@ -75,11 +74,9 @@ const PokemonList = () => {
 
       <div className="button-group">
 
-        <button disabled={paginationCount === 0 || isLoading} onClick={() => handlePagination(-1)}>Previous</button>
+        <button disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
 
-        <span>{paginationCount + 1}</span>
-
-        <button disabled={isLoading} onClick={() => handlePagination(1)}>Next</button>
+        <button onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
       </div>
     </section>
   )
