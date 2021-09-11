@@ -1,8 +1,15 @@
 import './PokemonList.scss'
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+
+const getPokemonIdFromUrl = (url) => {
+  const result = url.match(/\/\d+\//)[0]
+
+  return result || ''
+}
 
 const PokemonList = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [paginationCount, setPaginationCount] = useState(0)
   const [pokemonList, setPokemonList] = useState([])
 
@@ -10,7 +17,14 @@ const PokemonList = () => {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${paging * 10}`)
     const data = await res.json()
 
-    return data
+    return {
+      ...data,
+      results: data.results.map(item => ({
+        ...item,
+        id: getPokemonIdFromUrl(item.url)
+      })),
+    }
+
   }
 
   const handlePagination = async (value) => {
@@ -24,7 +38,6 @@ const PokemonList = () => {
 
   useEffect(() => {
     const getPokemon = async () => {
-      setIsLoading(true)
       const data = await fetchPokemon(0)
 
       setPokemonList(data.results)
@@ -48,7 +61,9 @@ const PokemonList = () => {
           {pokemonList.map(item => (
             <tr key={item.name}>
               <td>
-                {item.name}
+                <Link to={'/detail' + item.id}>
+                  {item.name}
+                </Link>
               </td>
               <td>
                 (owned: 0)
