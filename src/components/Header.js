@@ -7,6 +7,9 @@ const Header = () => {
         <li>
           <Link to="/">Pokemon List</Link>
         </li>
+        <li>
+          <Link to="/my-pokemon">My Pokemon</Link>
+        </li>
       </ul>
     </div>
   )
