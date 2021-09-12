@@ -1,8 +1,8 @@
-import './PokemonList.scss'
 import { useParams } from 'react-router-dom'
 import styled from '@emotion/styled'
 
 import TypeSpan from '../components/TypeSpan'
+import AbilityBox from '../components/AbilityBox'
 
 import {
   useQuery,
@@ -10,12 +10,39 @@ import {
 } from "@apollo/client";
 
 import CatchPokemon from '../components/CatchPokemon';
+import { Fragment } from 'react';
 
+const PokemonDetailSection = styled.section`
+  display: flex;
+  flex-direction: column;
 
-const StyledList = styled.ul`
+  > *:not(:first-child) {
+    margin-top: 1rem;
+  }
+
+  .pokemon-sprite {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > img {
+      height: 200px;
+    }
+  }
+`
+
+const AbilityList = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  > li:not(:first-child) {
+    margin-top: 1rem;
+  }
 `;
 
-const HorizontalList = styled.ul`
+const TypeList = styled.ul`
   margin: 0;
   padding: 0;
   display: flex;
@@ -26,6 +53,25 @@ const HorizontalList = styled.ul`
     margin-left: 0.5rem
   }
 `;
+
+const MovesTable = styled.table`
+  tr > td {
+    border: 1px solid #303030;
+    vertical-align: top;
+    font-size: 0.75rem;
+    padding: 2px 4px;
+
+    &:first-child {
+      white-space: nowrap;
+    }
+
+    .level-grid {
+      display: grid;
+      grid-template-columns: 2em auto;
+      grid-gap: 0.5em 0;
+    }
+  }
+`
 
 
 const PokemonList = () => {
@@ -47,13 +93,22 @@ const PokemonList = () => {
         types {
           type {
             name
-          },
-        },
+          }
+        }
         moves {
           move {
             name
-          },
-        },
+          }
+          version_group_details {
+            level_learned_at
+            move_learn_method {
+              name
+            }
+            version_group {
+              name
+            }
+          }
+        }
       }
     }
   `
@@ -67,14 +122,34 @@ const PokemonList = () => {
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {JSON.stringify(error)}</div>
 
+  const moveList = data.pokemon.moves
+    .filter(item =>
+      item.version_group_details.find(version =>
+        version.move_learn_method.name === 'egg' || version.move_learn_method.name === 'level-up'
+      )
+    )
+    .map(item => ({
+      ...item,
+      level_learned_at: [...new Set(item.version_group_details.map(version => version.level_learned_at))],
+    }))
+    .map(item => ({
+      name: item.move.name,
+      level_learned_at: item.level_learned_at.map(level => ({
+        level,
+        version: item.version_group_details.filter(version => version.level_learned_at === level).map(version => (version.version_group.name)),
+      })).sort((a, b) => a.level - b.level),
+    }))
+
+  console.log(
+    moveList
+  )
+
   return (
-    <section>
-      <div>
+    <PokemonDetailSection>
+      <span className="pokemon-sprite">
         <img alt="sprite" src={data.pokemon.sprites.front_default} />
 
-        <CatchPokemon pokemon={data.pokemon} />
-
-        <HorizontalList>
+        <TypeList>
           {data.pokemon.types.map(({ type }) => (
             <li key={type.name}>
               <TypeSpan type={type.name}>
@@ -82,21 +157,49 @@ const PokemonList = () => {
               </TypeSpan>
             </li>
           ))}
-        </HorizontalList>
+        </TypeList>
+      </span>
 
-        <StyledList>
-          {data.pokemon.abilities.map(({ ability }) => (
-            <li key={ability.name}>{ability.name}</li>
-          ))}
-        </StyledList>
+      <CatchPokemon pokemon={data.pokemon} />
 
-        <StyledList>
-          {data.pokemon.moves.map(({ move }) => (
-            <li key={move.name}>{move.name}</li>
-          ))}
-        </StyledList>
-      </div>
-    </section>
+      <AbilityList>
+        {data.pokemon.abilities.map(({ ability }) => (
+          <li key={ability.name}>
+            <AbilityBox ability={ability}></AbilityBox>
+          </li>
+        ))}
+      </AbilityList>
+
+      <MovesTable>
+        <thead>
+          <tr>
+            <th>Move</th>
+            <th>Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            moveList.map(item => (
+              <tr key={item.name}>
+                <td>{item.name}</td>
+                <td>
+                  <div className="level-grid">
+                    {
+                      item.level_learned_at.map(level => (
+                        <Fragment key={`${level.level}_${level.version.join('')}`}>
+                          <b>{level.level}</b>
+                          <span>({level.version.join(', ')})</span>
+                        </Fragment>
+                      ))
+                    }
+                  </div>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </MovesTable>
+    </PokemonDetailSection>
   )
 }
 
