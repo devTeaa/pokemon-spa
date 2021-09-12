@@ -22,7 +22,7 @@ const HorizontalList = styled.ul`
   flex-direction: row;
   list-style-type: none;
 
-  > li:not(:first-child) {
+  > li:not(:first-of-type) {
     margin-left: 0.5rem
   }
 `;
