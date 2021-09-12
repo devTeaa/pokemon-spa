@@ -4,6 +4,8 @@ import {
   useQuery,
   gql
 } from "@apollo/client";
+import { getMyPokemonList } from '../utils/LocalStorage'
+import { useRef } from "react";
 
 const PokemonListStyle = styled.section`
   > table {
@@ -34,12 +36,18 @@ const PokemonListStyle = styled.section`
 `
 
 const PokemonList = () => {
+  const myPokemonListStorage = useRef(getMyPokemonList())
+  const checkOwned = (pokemon) => {
+    return myPokemonListStorage.current.filter(item => item.id === pokemon.id).length
+  }
+
   const POKEMON_LIST = gql`
     query GetPokemonList($limit: Int!, $offset: Int!) {
       pokemons(limit: $limit, offset: $offset) {
         prevOffset
         nextOffset,
         results {
+          id,
           url,
           name,
           image,
@@ -93,7 +101,7 @@ const PokemonList = () => {
                 </Link>
               </td>
               <td>
-                (owned: 0)
+                (owned: {checkOwned(item)})
               </td>
             </tr>
           ))}

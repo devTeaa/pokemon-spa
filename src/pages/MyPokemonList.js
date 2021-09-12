@@ -3,8 +3,10 @@ import { useState } from "react";
 import './MyPokemonList.scss'
 import BoxPokemon from "../components/BoxPokemon"
 
+import { getMyPokemonList } from '../utils/LocalStorage'
+
 const MyPokemonList = () => {
-  const [myPokemonListStorage, setMyPokemonListStorage] = useState(JSON.parse(window.localStorage.getItem('myPokemonList') || '[]'))
+  const [myPokemonListStorage, setMyPokemonListStorage] = useState(getMyPokemonList())
 
   const handleRelease = (pokemon) => {
     window.localStorage.removeItem('myPokemonList')
