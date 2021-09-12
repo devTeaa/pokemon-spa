@@ -1,9 +1,37 @@
-import './PokemonList.scss'
 import { Link } from "react-router-dom"
+import styled from '@emotion/styled';
 import {
   useQuery,
   gql
 } from "@apollo/client";
+
+const PokemonListStyle = styled.section`
+  > table {
+    width: 100%;
+
+    td > img {
+      max-height: 80px;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    margin: 1rem 0;
+
+    > *:not(:first-of-type) {
+      margin-left: 1rem;
+    }
+
+    > button {
+      flex: 2;
+    }
+
+    > span {
+      flex: 1;
+      text-align: center;
+    }
+  }
+`
 
 const PokemonList = () => {
   const POKEMON_LIST = gql`
@@ -43,8 +71,8 @@ const PokemonList = () => {
   if (error) return <div>Error: {error}</div>
 
   return (
-    <section>
-      <table className="pokemon-list">
+    <PokemonListStyle>
+      <table>
         <thead>
           <tr>
             <th />
@@ -73,12 +101,10 @@ const PokemonList = () => {
       </table>
 
       <div className="button-group">
-
         <button type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
-
         <button type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
       </div>
-    </section>
+    </PokemonListStyle>
   )
 }
 

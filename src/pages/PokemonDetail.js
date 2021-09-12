@@ -1,5 +1,8 @@
 import './PokemonList.scss'
 import { useParams } from 'react-router-dom'
+import styled from '@emotion/styled'
+
+import TypeSpan from '../components/TypeSpan'
 
 import {
   useQuery,
@@ -7,6 +10,22 @@ import {
 } from "@apollo/client";
 
 import CatchPokemon from '../components/CatchPokemon';
+
+
+const StyledList = styled.ul`
+`;
+
+const HorizontalList = styled.ul`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+
+  > li:not(:first-child) {
+    margin-left: 0.5rem
+  }
+`;
 
 
 const PokemonList = () => {
@@ -55,23 +74,27 @@ const PokemonList = () => {
 
         <CatchPokemon pokemon={data.pokemon} />
 
-        <ul>
+        <HorizontalList>
           {data.pokemon.types.map(({ type }) => (
-            <li key={type.name}>{type.name}</li>
+            <li key={type.name}>
+              <TypeSpan type={type.name}>
+                {type.name}
+              </TypeSpan>
+            </li>
           ))}
-        </ul>
+        </HorizontalList>
 
-        <ul>
+        <StyledList>
           {data.pokemon.abilities.map(({ ability }) => (
             <li key={ability.name}>{ability.name}</li>
           ))}
-        </ul>
+        </StyledList>
 
-        <ul>
+        <StyledList>
           {data.pokemon.moves.map(({ move }) => (
             <li key={move.name}>{move.name}</li>
           ))}
-        </ul>
+        </StyledList>
       </div>
     </section>
   )
