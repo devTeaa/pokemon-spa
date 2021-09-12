@@ -1,8 +1,35 @@
+import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
+
+const HeaderSection = styled.section`
+  background-color: #D4342F;
+  padding: 0.5rem 1rem;
+
+  > ul {
+    display: flex;
+    flex-direcion: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+    > li {
+      flex: 1;
+
+      &:not(:first-of-type) {
+        margin-left: 1rem;
+      }
+
+      > a {
+        color: white;
+        text-decoration: none;
+      }
+    }
+  }
+`
 
 const Header = () => {
   return (
-    <div>
+    <HeaderSection>
       <ul>
         <li>
           <Link to="/">Pokemon List</Link>
@@ -11,7 +38,7 @@ const Header = () => {
           <Link to="/my-pokemon">My Pokemon</Link>
         </li>
       </ul>
-    </div>
+    </HeaderSection>
   )
 }
 
