@@ -140,10 +140,6 @@ const PokemonList = () => {
       })).sort((a, b) => a.level - b.level),
     }))
 
-  console.log(
-    moveList
-  )
-
   return (
     <PokemonDetailSection>
       <span className="pokemon-sprite">
