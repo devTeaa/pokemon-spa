@@ -1,10 +1,13 @@
-
-import './BoxPokemon.scss'
-
 import {
   useQuery,
   gql
 } from "@apollo/client";
+import styled from "@emotion/styled"
+
+const BoxPokemonDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 const BoxPokemon = (props) => {
   const POKEMON_DETAIL = gql`
@@ -29,10 +32,10 @@ const BoxPokemon = (props) => {
   if (error) return <div>Error: {JSON.stringify(error)}</div>
 
   return (
-    <div className="pokemon-box">
+    <BoxPokemonDiv className="pokemon-box">
       <img alt="sprite" src={data.pokemon.sprites.front_default} />
       <span>{props.pokemon.pokemonName}</span>
-    </div>
+    </BoxPokemonDiv>
   )
 }
 

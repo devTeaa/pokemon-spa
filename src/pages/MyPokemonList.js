@@ -1,9 +1,13 @@
 import { useState } from "react";
 
-import './MyPokemonList.scss'
 import BoxPokemon from "../components/BoxPokemon"
 
 import { getMyPokemonList } from '../utils/LocalStorage'
+import styled from "@emotion/styled";
+
+const MyPokemonListTable = styled.table`
+  width: 100%;
+`
 
 const MyPokemonList = () => {
   const [myPokemonListStorage, setMyPokemonListStorage] = useState(getMyPokemonList())
@@ -19,7 +23,7 @@ const MyPokemonList = () => {
 
   return (
     <section>
-      <table className="my-pokemon-list">
+      <MyPokemonListTable className="my-pokemon-list">
         <thead>
           <tr>
             <th>Pokemon</th>
@@ -41,7 +45,7 @@ const MyPokemonList = () => {
             ))
           }
         </tbody>
-      </table>
+      </MyPokemonListTable>
     </section>
   )
 }
