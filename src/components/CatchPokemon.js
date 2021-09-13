@@ -1,5 +1,4 @@
 import styled from "@emotion/styled"
-import PokemonLogo from '../assets/pokeball-logo.svg'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -83,7 +82,7 @@ const CatchPokemon = (props) => {
   return (
     <div>
       <PokeballButton onClick={() => catchPokemon()}>
-        <img alt="pokeball" src={PokemonLogo} />
+        <img alt="pokeball" src='/pokeball-logo.svg' />
       </PokeballButton>
     </div>
   )
