@@ -10,7 +10,7 @@ const BoxPokemonDiv = styled.div`
   align-items: center;
   position: relative;
 
-  &:before {
+  &.tamed:before {
     content: '';
     display: block;
     position: absolute;
@@ -30,9 +30,8 @@ const BoxPokemonDiv = styled.div`
   > div {
     padding-left: 4px;
 
-    span {
+    .box-label {
       font-family: Consolas;
-      color: #FDFDFD;
     }
 
     a {
@@ -40,7 +39,12 @@ const BoxPokemonDiv = styled.div`
       background-color: #38B0B8;
       text-decoration: none;
       padding: 2px 4px 4px 4px;
-      color: #FDFDFD;
+    }
+  }
+
+  &:not(.tamed) {
+    .box-label {
+      text-transform: capitalize;
     }
   }
 `
@@ -58,6 +62,8 @@ const BoxPokemon = (props) => {
     }
   `
 
+  const pokemonIsTame = !!props.pokemon.pokemonName
+
   const { loading, error, data } = useQuery(POKEMON_DETAIL, {
     variables: {
       name: props.pokemon.name
@@ -68,10 +74,12 @@ const BoxPokemon = (props) => {
   if (error) return <div>Error: {JSON.stringify(error)}</div>
 
   return (
-    <BoxPokemonDiv className="pokemon-box">
+    <BoxPokemonDiv className={
+      `pokemon-box ${pokemonIsTame && 'tamed'}`
+    }>
       <img alt="sprite" src={data.pokemon.sprites.front_default} />
       <div>
-        <span>{props.pokemon.pokemonName}</span>
+        <span className="box-label">{props.pokemon.pokemonName || props.pokemon.name}</span>
         <br />
         <Link to={'/detail/' + props.pokemon.name}>Detail</Link>
       </div>

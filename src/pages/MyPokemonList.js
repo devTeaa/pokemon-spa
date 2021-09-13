@@ -17,6 +17,10 @@ const MyPokemonListTable = styled.table`
     background: linear-gradient(0deg, rgba(48,216,80,1) 0%, rgba(16,168,64,1) 37%, rgba(16,168,64,1) 100%);
     border-spacing: 1rem;
 
+    * {
+      color: #FDFDFD;
+    }
+
     td {
       border: none;
 
@@ -25,7 +29,6 @@ const MyPokemonListTable = styled.table`
         border: none;
         background-color: #303030;
         padding: 8px;
-        color: #FDFDFD;
       }
     }
   }

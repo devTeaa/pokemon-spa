@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import styled from '@emotion/styled';
 import {
   useQuery,
@@ -6,13 +5,27 @@ import {
 } from "@apollo/client";
 import { getMyPokemonList } from '../utils/LocalStorage'
 import { useRef } from "react";
+import BoxPokemon from "../components/BoxPokemon"
 
 const PokemonListStyle = styled.section`
   > table {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
 
-    td > img {
-      max-height: 80px;
+    tbody > tr {
+      background: rgb(203,67,66);
+      background: linear-gradient(0deg, rgba(203,67,66,1) 0%, rgba(168,47,47,1) 37%, rgba(168,47,47,1) 100%);
+      color: white;
+      border-spacing: 1rem;
+
+      * {
+        color: #FDFDFD;
+      }
+
+      td > img {
+        max-height: 80px;
+      }
     }
   }
 
@@ -83,8 +96,7 @@ const PokemonList = () => {
       <table>
         <thead>
           <tr>
-            <th />
-            <th>Pokemon Name</th>
+            <th>Pokemon</th>
             <th>Count</th>
           </tr>
         </thead>
@@ -93,12 +105,7 @@ const PokemonList = () => {
           {data.pokemons.results.map(item => (
             <tr key={item.name}>
               <td>
-                <img alt="sprite" src={item.image} />
-              </td>
-              <td>
-                <Link to={'/detail/' + item.name}>
-                  {item.name}
-                </Link>
+                <BoxPokemon pokemon={item} />
               </td>
               <td>
                 (owned: {checkOwned(item)})
