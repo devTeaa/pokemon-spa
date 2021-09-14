@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import {
   useQuery,
-  gql
+  gql,
 } from "@apollo/client";
 import { getMyPokemonList } from '../utils/LocalStorage'
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import BoxPokemon from "../components/BoxPokemon"
 
 const PokemonListStyle = styled.section`
@@ -48,7 +48,56 @@ const PokemonListStyle = styled.section`
   }
 `
 
+const ObserveableElement = (props) => {
+  const elementRef = useRef(null)
+
+  const observer = new IntersectionObserver((entries, self) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return
+      props.handler(props.payload)
+      self.unobserve(entry.target)
+    })
+  })
+
+  useEffect(() => {
+    if (!elementRef.current) return
+    observer.observe(elementRef.current)
+  }, [elementRef])
+
+  return (
+    <div ref={elementRef}>
+      {props.children}
+    </div>
+  )
+}
+
 const PokemonList = () => {
+  // const containerRef = useRef(null)
+  // const [firstRequestFinished, setFirstRequestFinished] = useState(false)
+
+  // const callbackFunction = (x, y) => {
+  //   console.log(firstRequestFinished, x, y)
+  //   if (!firstRequestFinished) return
+  //   console.log('FIRED')
+  //   // handlePagination(data.pokemons.nextOffset)
+  // }
+
+  // const options = {
+  //   root: null,
+  //   rootMargin: '0px',
+  //   threshold: 1.0,
+  // }
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(callbackFunction, options)
+  //   if (containerRef.current) observer.observe(containerRef.current)
+
+  //   // return (() => {
+  //   //   if (containerRef.current) observer.unobserve(containerRef.current)
+  //   // })
+
+  // }, [containerRef, options])
+
   const myPokemonListStorage = useRef(getMyPokemonList())
   const checkOwned = (pokemon) => {
     return myPokemonListStorage.current.filter(item => item.id === pokemon.id).length
@@ -71,22 +120,32 @@ const PokemonList = () => {
 
   const { loading, error, data, fetchMore } = useQuery(POKEMON_LIST, {
     variables: {
-      limit: 10,
+      limit: 20,
       offset: 0
     },
   });
 
-  const handlePagination = (offset) => {
+  const handlePagination = (paging) => {
+    // console.log(data.pokemons.results.length, paging)
+    const pagingIsLastIndex = paging.index === (data.pokemons.results.length - 1)
+    if (!pagingIsLastIndex) return
+
     fetchMore({
-      variables: { offset, limit: 10 },
+      variables: { offset: paging.nextOffset, limit: 20 },
       updateQuery: (prevResults, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prevResults
 
-        return fetchMoreResult
+        fetchMoreResult.pokemons.results = [
+          ...fetchMoreResult.pokemons.results,
+          ...prevResults.pokemons.results,
+        ]
+
+        console.log(fetchMoreResult.pokemons.results)
+
+        // return fetchMoreResult
       }
     })
   }
-
 
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
@@ -102,10 +161,15 @@ const PokemonList = () => {
         </thead>
 
         <tbody>
-          {data.pokemons.results.map(item => (
+          {data.pokemons.results.map((item, index) => (
             <tr key={item.name}>
               <td>
-                <BoxPokemon pokemon={item} />
+                <ObserveableElement handler={handlePagination} payload={{
+                  index,
+                  nextOffset: data.pokemons.nextOffset,
+                }}>
+                  <BoxPokemon pokemon={item} />
+                </ObserveableElement>
               </td>
               <td>
                 (owned: {checkOwned(item)})
@@ -115,10 +179,12 @@ const PokemonList = () => {
         </tbody>
       </table>
 
-      <div className="button-group">
-        <button type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
-        <button type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
-      </div>
+      {/* {firstRequestFinished &&
+        <div className="button-group" ref={containerRef}>
+          <button type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
+          <button type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
+        </div>
+      } */}
     </PokemonListStyle>
   )
 }
