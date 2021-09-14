@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import {
   useQuery,
   gql
@@ -86,6 +87,13 @@ const BoxPokemon = (props) => {
       </div>
     </BoxPokemonDiv>
   )
+}
+
+BoxPokemon.propTypes = {
+  pokemon: PropTypes.shape({
+    pokemonName: PropTypes.string,
+    name: PropTypes.string.isRequired,
+  })
 }
 
 export default BoxPokemon

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import {
   useQuery,
@@ -52,6 +53,12 @@ const AbilityBox = (props) => {
       <p>{data.ability.response.effect_entries.find(item => item.language.name === 'en').short_effect}</p>
     </AbilityDiv>
   )
+}
+
+AbilityBox.propTypes = {
+  ability: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  })
 }
 
 export default AbilityBox

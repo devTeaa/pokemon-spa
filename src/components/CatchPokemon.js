@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styled from "@emotion/styled"
 
 import Swal from 'sweetalert2'
@@ -86,6 +87,13 @@ const CatchPokemon = (props) => {
       </PokeballButton>
     </div>
   )
+}
+
+CatchPokemon.propTypes = {
+  pokemon: {
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  }
 }
 
 export default CatchPokemon
