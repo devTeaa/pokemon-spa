@@ -9,6 +9,7 @@ const BoxPokemonDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  min-height: 80px;
 
   &.tamed:before {
     content: '';
