@@ -31,7 +31,7 @@ const PokemonListStyle = styled.section`
 
   .button-group {
     display: flex;
-    margin: 1rem 0;
+    margin-top: 8px;
 
     > *:not(:first-of-type) {
       margin-left: 1rem;
@@ -46,6 +46,13 @@ const PokemonListStyle = styled.section`
       text-align: center;
     }
   }
+`
+
+const PagingButton = styled.button`
+  padding: 8px 4px;
+  border: none;
+  background-color: #303030;
+  color: #FDFDFD;
 `
 
 const PokemonList = () => {
@@ -116,8 +123,8 @@ const PokemonList = () => {
       </table>
 
       <div className="button-group">
-        <button type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</button>
-        <button type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</button>
+        <PagingButton type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</PagingButton>
+        <PagingButton type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</PagingButton>
       </div>
     </PokemonListStyle>
   )
