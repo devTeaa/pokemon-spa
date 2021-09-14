@@ -2,7 +2,7 @@ import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
 
 const HeaderSection = styled.section`
-  background-color: #D4342F;
+  background-color: #A82F2F;
   padding: 0.5rem 1rem;
 
   > ul {
