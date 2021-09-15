@@ -16,7 +16,7 @@ const BoxPokemonDiv = styled.div`
     content: '';
     display: block;
     position: absolute;
-    background-image: url('/pokeball-logo.svg');
+    background-image: url('/pokemon-spa/pokeball-logo.svg');
     top: 0;
     left: 0;
     opacity: 0.6;

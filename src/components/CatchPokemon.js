@@ -83,7 +83,7 @@ const CatchPokemon = (props) => {
   return (
     <div>
       <PokeballButton onClick={() => catchPokemon()}>
-        <img alt="pokeball" src='/pokeball-logo.svg' />
+        <img alt="pokeball" src='/pokemon-spa/pokeball-logo.svg' />
       </PokeballButton>
     </div>
   )
