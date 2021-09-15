@@ -90,10 +90,10 @@ const CatchPokemon = (props) => {
 }
 
 CatchPokemon.propTypes = {
-  pokemon: {
+  pokemon: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-  }
+  })
 }
 
 export default CatchPokemon
