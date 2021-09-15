@@ -83,7 +83,7 @@ const BoxPokemon = (props) => {
       <div>
         <span className="box-label">{props.pokemon.pokemonName || props.pokemon.name}</span>
         <br />
-        <Link to={'/detail/' + props.pokemon.name}>Detail</Link>
+        <Link to={'/pokemon-spa/detail/' + props.pokemon.name}>Detail</Link>
       </div>
     </BoxPokemonDiv>
   )
