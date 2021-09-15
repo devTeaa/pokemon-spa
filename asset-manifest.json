@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/pokemon-spa/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/pokemon-spa/static/js/main.584e52c9.chunk.js",
-    "main.js.map": "/pokemon-spa/static/js/main.584e52c9.chunk.js.map",
+    "main.js": "/pokemon-spa/static/js/main.d59886f3.chunk.js",
+    "main.js.map": "/pokemon-spa/static/js/main.d59886f3.chunk.js.map",
     "runtime-main.js": "/pokemon-spa/static/js/runtime-main.732ebea3.js",
     "runtime-main.js.map": "/pokemon-spa/static/js/runtime-main.732ebea3.js.map",
     "static/js/2.6be09a5b.chunk.js": "/pokemon-spa/static/js/2.6be09a5b.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.732ebea3.js",
     "static/js/2.6be09a5b.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.584e52c9.chunk.js"
+    "static/js/main.d59886f3.chunk.js"
   ]
 }
