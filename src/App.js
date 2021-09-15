@@ -29,7 +29,7 @@ function App() {
           <Header />
 
           <AppContainer>
-            <Route path="/" exact component={PokemonList} />
+            <Route path="/pokemon-list" exact component={PokemonList} />
             <Route path="/detail/:name" component={PokemonDetail} />
             <Route path="/my-pokemon" component={MyPokemonList} />
           </AppContainer>
