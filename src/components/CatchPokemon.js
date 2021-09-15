@@ -83,17 +83,17 @@ const CatchPokemon = (props) => {
   return (
     <div>
       <PokeballButton onClick={() => catchPokemon()}>
-        <img alt="pokeball" src='/pokeball-logo.svg' />
+        <img alt="pokeball" src='/pokemon-spa/pokeball-logo.svg' />
       </PokeballButton>
     </div>
   )
 }
 
 CatchPokemon.propTypes = {
-  pokemon: {
+  pokemon: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-  }
+  })
 }
 
 export default CatchPokemon
