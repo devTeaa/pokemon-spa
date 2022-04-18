@@ -6,32 +6,16 @@ import { getMyPokemonList } from '../utils/LocalStorage'
 import styled from "@emotion/styled";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { PokemonListContainer } from '../sharedStyled'
 
-const MyPokemonListTable = styled.table`
+const ReleaseButton = styled.button`
+  background-color: #303030;
+  text-align: center;
+  border: none;
+  padding: 8px;
+  display: block;
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
-
-  tbody > tr {
-    background: rgb(48,216,80);
-    background: linear-gradient(0deg, rgba(48,216,80,1) 0%, rgba(16,168,64,1) 37%, rgba(16,168,64,1) 100%);
-    border-spacing: 1rem;
-
-    * {
-      color: #FDFDFD;
-    }
-
-    td {
-      border: none;
-
-      > button {
-        font-family: Consolas;
-        border: none;
-        background-color: #303030;
-        padding: 8px;
-      }
-    }
-  }
+  color: #ffffff;
 `
 
 const MyPokemonList = () => {
@@ -61,31 +45,39 @@ const MyPokemonList = () => {
   }
 
   return (
-    <section>
-      <MyPokemonListTable>
-        <thead>
-          <tr>
-            <th>Pokemon</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+    <PokemonListContainer>
+      {myPokemonListStorage.map(item => (
+        <span>
+          <BoxPokemon pokemon={item} hanndleRelease={handleRelease}/>
+          <ReleaseButton type="button" onClick={() => handleRelease(item)}>Release</ReleaseButton>
+        </span>
+      ))}
+    </PokemonListContainer>
+    // <section>
+    //   <MyPokemonListTable>
+    //     <thead>
+    //       <tr>
+    //         <th>Pokemon</th>
+    //         <th>Action</th>
+    //       </tr>
+    //     </thead>
 
-        <tbody>
-          {
-            myPokemonListStorage.map(item => (
-              <tr key={item.pokemonName}>
-                <td>
-                  <BoxPokemon pokemon={item} handleRelease={handleRelease} />
-                </td>
-                <td>
-                  <button type="button" onClick={() => handleRelease(item)}>Release</button>
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </MyPokemonListTable>
-    </section>
+    //     <tbody>
+    //       {
+    //         myPokemonListStorage.map(item => (
+    //           <tr key={item.pokemonName}>
+    //             <td>
+    //               <BoxPokemon pokemon={item} handleRelease={handleRelease} />
+    //             </td>
+    //             <td>
+    //               <button type="button" onClick={() => handleRelease(item)}>Release</button>
+    //             </td>
+    //           </tr>
+    //         ))
+    //       }
+    //     </tbody>
+    //   </MyPokemonListTable>
+    // </section>
   )
 }
 

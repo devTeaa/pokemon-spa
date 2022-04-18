@@ -13,22 +13,35 @@ import CatchPokemon from '../components/CatchPokemon';
 import { Fragment } from 'react';
 
 const PokemonDetailSection = styled.section`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
 
   > *:not(:first-child) {
     margin-top: 1rem;
   }
 
   .pokemon-sprite {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
     align-items: center;
 
     > img {
       height: 200px;
     }
+
+    > ul {
+      grid-column: 1/-1;
+      justify-self: center;
+    }
+  }
+
+  > table {
+    grid-column: 1/-1;
   }
 `
 
@@ -144,6 +157,7 @@ const PokemonList = () => {
     <PokemonDetailSection>
       <span className="pokemon-sprite">
         <img alt="sprite" src={data.pokemon.sprites.front_default} />
+        <CatchPokemon pokemon={data.pokemon} />
 
         <TypeList>
           {data.pokemon.types.map(({ type }) => (
@@ -156,7 +170,6 @@ const PokemonList = () => {
         </TypeList>
       </span>
 
-      <CatchPokemon pokemon={data.pokemon} />
 
       <AbilityList>
         {data.pokemon.abilities.map(({ ability }) => (

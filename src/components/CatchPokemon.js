@@ -81,11 +81,11 @@ const CatchPokemon = (props) => {
   }
 
   return (
-    <div>
+    <span>
       <PokeballButton onClick={() => catchPokemon()}>
         <img alt="pokeball" src='/pokemon-spa/pokeball-logo.svg' />
       </PokeballButton>
-    </div>
+    </span>
   )
 }
 

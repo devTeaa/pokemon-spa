@@ -4,47 +4,26 @@ import {
   gql
 } from "@apollo/client";
 import { getMyPokemonList } from '../utils/LocalStorage'
-import { useRef } from "react";
+import React, { useRef } from "react";
 import BoxPokemon from "../components/BoxPokemon"
+import { PokemonListContainer } from '../sharedStyled'
 
-const PokemonListStyle = styled.section`
-  > table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 8px;
+const PagingContainer = styled.div`
+  display: flex;
+  margin-top: 8px;
+  grid-column: 1/-1;
 
-    tbody > tr {
-      background: rgb(203,67,66);
-      background: linear-gradient(0deg, rgba(203,67,66,1) 0%, rgba(168,47,47,1) 37%, rgba(168,47,47,1) 100%);
-      color: white;
-      border-spacing: 1rem;
-
-      * {
-        color: #FDFDFD;
-      }
-
-      td > img {
-        max-height: 80px;
-      }
-    }
+  > *:not(:first-of-type) {
+    margin-left: 1rem;
   }
 
-  .button-group {
-    display: flex;
-    margin-top: 8px;
+  > button {
+    flex: 2;
+  }
 
-    > *:not(:first-of-type) {
-      margin-left: 1rem;
-    }
-
-    > button {
-      flex: 2;
-    }
-
-    > span {
-      flex: 1;
-      text-align: center;
-    }
+  > span {
+    flex: 1;
+    text-align: center;
   }
 `
 
@@ -78,14 +57,14 @@ const PokemonList = () => {
 
   const { loading, error, data, fetchMore } = useQuery(POKEMON_LIST, {
     variables: {
-      limit: 10,
+      limit: 30,
       offset: 0
     },
   });
 
   const handlePagination = (offset) => {
     fetchMore({
-      variables: { offset, limit: 10 },
+      variables: { offset, limit: 30 },
       updateQuery: (prevResults, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prevResults
 
@@ -99,34 +78,19 @@ const PokemonList = () => {
   if (error) return <div>Error: {error}</div>
 
   return (
-    <PokemonListStyle>
-      <table>
-        <thead>
-          <tr>
-            <th>Pokemon</th>
-            <th>Count</th>
-          </tr>
-        </thead>
+    <PokemonListContainer>
+      {data.pokemons.results.map(item => (
+        <span>
+          <BoxPokemon pokemon={item}/>
+          (owned: {checkOwned(item)})
+        </span>
+      ))}
 
-        <tbody>
-          {data.pokemons.results.map(item => (
-            <tr key={item.name}>
-              <td>
-                <BoxPokemon pokemon={item} />
-              </td>
-              <td>
-                (owned: {checkOwned(item)})
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="button-group">
+      <PagingContainer>
         <PagingButton type="button" disabled={data.pokemons.nextOffset === 10} onClick={() => handlePagination(data.pokemons.prevOffset)}>Previous</PagingButton>
         <PagingButton type="button" onClick={() => handlePagination(data.pokemons.nextOffset)}>Next</PagingButton>
-      </div>
-    </PokemonListStyle>
+      </PagingContainer>
+    </PokemonListContainer>
   )
 }
 

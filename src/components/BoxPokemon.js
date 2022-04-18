@@ -8,9 +8,13 @@ import { Link } from "react-router-dom"
 
 const BoxPokemonDiv = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   position: relative;
   min-height: 80px;
+  background-color: #A82F2F;
+  padding: 20px;
+  color: #fff;
 
   &.tamed:before {
     content: '';
@@ -19,18 +23,22 @@ const BoxPokemonDiv = styled.div`
     background-image: url('/pokemon-spa/pokeball-logo.svg');
     top: 0;
     left: 0;
-    opacity: 0.6;
-    width: 60px;
-    height: 60px;
+    opacity: 0.4;
+    width: 120px;
+    height: 120px;
   }
 
   > img {
     position: relative;
-    max-width: 80px;
+    max-width: 96px;
   }
 
   > div {
     padding-left: 4px;
+
+    > *:not(:first-child) {
+      margin-left: 8px;
+    }
 
     .box-label {
       font-family: Consolas;
@@ -41,6 +49,7 @@ const BoxPokemonDiv = styled.div`
       background-color: #38B0B8;
       text-decoration: none;
       padding: 2px 4px 4px 4px;
+      color: #fff;
     }
   }
 
@@ -82,7 +91,6 @@ const BoxPokemon = (props) => {
       <img alt="sprite" src={data.pokemon.sprites.front_default} />
       <div>
         <span className="box-label">{props.pokemon.pokemonName || props.pokemon.name}</span>
-        <br />
         <Link to={'/pokemon-spa/detail/' + props.pokemon.name}>Detail</Link>
       </div>
     </BoxPokemonDiv>
