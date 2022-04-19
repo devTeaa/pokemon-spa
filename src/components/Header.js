@@ -32,10 +32,10 @@ const Header = () => {
     <HeaderSection>
       <ul>
         <li>
-          <Link to="/pokemon-spa">Pokemon List</Link>
+          <Link to="/">Pokemon List</Link>
         </li>
         <li>
-          <Link to="/pokemon-spa/my-pokemon">My Pokemon</Link>
+          <Link to="/my-pokemon">My Pokemon</Link>
         </li>
       </ul>
     </HeaderSection>
