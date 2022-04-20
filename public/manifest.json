@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Pokemon SPA Herman",
+  "name": "Pokemon SPA Herman",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,23 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "Pokemon SPA Herman",
+      "short_name": "Pokemon SPA Herman",
+      "url": "/",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
 }
